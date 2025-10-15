@@ -7,6 +7,8 @@ import com.letterbox.repository.ReviewRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class DataLoader implements CommandLineRunner {
 
@@ -20,7 +22,8 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (movieRepository.count() == 0) {
+        // Seed solo si la base está vacía
+        if (movieRepository.count() == 0 && reviewRepository.count() == 0) {
             loadSampleData();
         }
     }
@@ -33,7 +36,7 @@ public class DataLoader implements CommandLineRunner {
         movie1.setReleaseYear(1972);
         movie1.setGenre("Drama");
         movie1.setSynopsis("La saga de una familia mafiosa italiana-americana.");
-        movieRepository.save(movie1);
+        movie1 = movieRepository.save(movie1); // <- recupero ID real
 
         Movie movie2 = new Movie();
         movie2.setTitle("Pulp Fiction");
@@ -41,23 +44,25 @@ public class DataLoader implements CommandLineRunner {
         movie2.setReleaseYear(1994);
         movie2.setGenre("Crimen");
         movie2.setSynopsis("Historias entrelazadas del mundo criminal.");
-        movieRepository.save(movie2);
+        movie2 = movieRepository.save(movie2); // <- recupero ID real
 
         // --- Reseñas ---
         Review review1 = new Review();
-        review1.setMovieId(1L);
+        review1.setMovieId(movie1.getId());           // ✅ no hardcodear 1L
         review1.setReviewerName("María González");
         review1.setRating(5.0);
         review1.setComment("Una obra maestra del cine.");
         review1.setIsFavorite(true);
+        review1.setReviewDate(LocalDateTime.now());
         reviewRepository.save(review1);
 
         Review review2 = new Review();
-        review2.setMovieId(2L);
+        review2.setMovieId(movie2.getId());           // ✅ no hardcodear 2L
         review2.setReviewerName("Carlos Rodríguez");
         review2.setRating(4.5);
         review2.setComment("Tarantino en su máximo esplendor.");
         review2.setIsFavorite(true);
+        review2.setReviewDate(LocalDateTime.now());
         reviewRepository.save(review2);
 
         System.out.println("✅ Datos de muestra cargados");
