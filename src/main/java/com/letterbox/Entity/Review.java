@@ -1,4 +1,4 @@
-package com.letterbox.entity;
+package com.letterbox.Entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

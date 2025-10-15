@@ -1,4 +1,4 @@
-package com.letterbox.entity;
+package com.letterbox.Entity;
 
 import jakarta.persistence.*;
 
@@ -12,7 +12,8 @@ public class Movie {
 
     private String title;
     private String director;
-    private Integer year;
+    @Column(name = "release_year")
+    private Integer releaseYear;
     private String genre;
     private String synopsis;
     private String posterUrl;
@@ -29,8 +30,9 @@ public class Movie {
     public String getDirector() { return director; }
     public void setDirector(String director) { this.director = director; }
 
-    public Integer getYear() { return year; }
-    public void setYear(Integer year) { this.year = year; }
+    public Integer getReleaseYear() { return releaseYear; }
+    public void setReleaseYear(Integer releaseYear) { this.releaseYear = releaseYear; }
+
 
     public String getGenre() { return genre; }
     public void setGenre(String genre) { this.genre = genre; }
