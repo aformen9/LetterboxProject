@@ -4,15 +4,22 @@ server:
 spring:
   application:
     name: letterbox-unified
+
   datasource:
-    url: jdbc:h2:mem:letterboxdb
+    # H2 persistente en archivo (se crea ./data/letterboxdb.mv.db en la raíz del proyecto)
+    url: jdbc:h2:file:./data/letterboxdb;DB_CLOSE_DELAY=-1
     driver-class-name: org.h2.Driver
     username: sa
-    password: password
+    password: ""
+
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update       # NO borra tablas; migra si cambian las Entities
     show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect  # explícito (opcional pero seguro)
+
   h2:
     console:
       enabled: true
+      path: /h2-console
+
