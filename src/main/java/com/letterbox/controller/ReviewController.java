@@ -1,6 +1,6 @@
 package com.letterbox.controller;
 
-import com.letterbox.Entity.Review;          // OJO: Entity con E mayúscula
+import com.letterbox.entity.Review;          // OJO: Entity con E mayúscula
 import com.letterbox.dto.ReviewDTO;
 import com.letterbox.service.ReviewService;
 import org.springframework.http.ResponseEntity;

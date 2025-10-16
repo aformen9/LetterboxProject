@@ -1,8 +1,8 @@
 package com.letterbox.service;
 
-import com.letterbox.Entity.Review;
-import com.letterbox.Entity.ReviewRating;
-import com.letterbox.Entity.User;
+import com.letterbox.entity.Review;
+import com.letterbox.entity.ReviewRating;
+import com.letterbox.entity.User;
 import com.letterbox.dto.RatingRequest;
 import com.letterbox.dto.RatingSummaryResponse;
 import com.letterbox.repository.ReviewRatingRepository;

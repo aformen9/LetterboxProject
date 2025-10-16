@@ -1,6 +1,6 @@
 package com.letterbox.service;
 
-import com.letterbox.Entity.User;
+import com.letterbox.entity.User;
 import com.letterbox.dto.UserDTO;
 import com.letterbox.repository.UserRepository;
 import org.springframework.stereotype.Service;

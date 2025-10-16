@@ -1,6 +1,6 @@
 package com.letterbox.controller;
 
-import com.letterbox.Entity.User;
+import com.letterbox.entity.User;
 import com.letterbox.dto.UserDTO;
 import com.letterbox.service.UserService;
 import jakarta.validation.Valid;
