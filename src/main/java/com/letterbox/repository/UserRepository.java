@@ -1,6 +1,6 @@
 package com.letterbox.repository;
 
-import com.letterbox.Entity.User;
+import com.letterbox.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

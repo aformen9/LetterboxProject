@@ -1,7 +1,7 @@
 package com.letterbox.config;
 
-import com.letterbox.Entity.Movie;
-import com.letterbox.Entity.Review;
+import com.letterbox.entity.Movie;
+import com.letterbox.entity.Review;
 import com.letterbox.repository.MovieRepository;
 import com.letterbox.repository.ReviewRepository;
 import org.springframework.boot.CommandLineRunner;

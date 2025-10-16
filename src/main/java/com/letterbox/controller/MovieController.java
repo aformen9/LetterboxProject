@@ -1,6 +1,6 @@
 package com.letterbox.controller;
 
-import com.letterbox.Entity.Movie;
+import com.letterbox.entity.Movie;
 import com.letterbox.dto.MovieDTO;
 import com.letterbox.repository.MovieRepository;
 import com.letterbox.service.MovieService;
