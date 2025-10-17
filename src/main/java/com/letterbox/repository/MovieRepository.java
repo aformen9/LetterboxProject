@@ -1,6 +1,6 @@
 package com.letterbox.repository;
 
-import com.letterbox.Entity.Movie;
+import com.letterbox.entity.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

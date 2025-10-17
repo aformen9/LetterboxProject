@@ -1,7 +1,7 @@
 package com.letterbox.service;
 
 import com.letterbox.dto.MovieDTO;
-import com.letterbox.Entity.Movie;
+import com.letterbox.entity.Movie;
 import com.letterbox.repository.MovieRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

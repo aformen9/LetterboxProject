@@ -1,4 +1,4 @@
-package com.letterbox.Entity;
+package com.letterbox.entity;
 
 import jakarta.persistence.*;
 
