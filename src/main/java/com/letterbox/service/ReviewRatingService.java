@@ -30,23 +30,23 @@ public class ReviewRatingService {
 
     @Transactional
     public RatingSummaryResponse rate(Long reviewId, RatingRequest dto) {
-        // Validaciones básicas
+
         Review review = reviews.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("Reseña no encontrada"));
         User user = users.findById(dto.getUserId()).orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
         if (dto.getValue() == null || dto.getValue() < 1 || dto.getValue() > 5) {
             throw new IllegalArgumentException("Valor de voto inválido (1..5)");
         }
 
-        // Upsert (actualiza si ya existe el voto del usuario)
+
         ReviewRating rr = ratings.findByUserIdAndReviewId(user.getId(), review.getId())
                 .orElseGet(ReviewRating::new);
 
         rr.setUserId(user.getId());
         rr.setReviewId(review.getId());
-        rr.setScore(dto.getValue()); // << score, no value
+        rr.setScore(dto.getValue());
         ratings.save(rr);
 
-        // Resumen actualizado
+
         Double avg = ratings.getAverageForReview(reviewId);
         Long count = ratings.getCountForReview(reviewId);
         return new RatingSummaryResponse(reviewId, avg, count);
@@ -54,7 +54,7 @@ public class ReviewRatingService {
 
     @Transactional(readOnly = true)
     public RatingSummaryResponse summary(Long reviewId) {
-        // Asegura que la reseña exista
+
         reviews.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("Reseña no encontrada"));
         Double avg = ratings.getAverageForReview(reviewId);
         Long count = ratings.getCountForReview(reviewId);

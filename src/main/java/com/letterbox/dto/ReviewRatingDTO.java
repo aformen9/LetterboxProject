@@ -10,7 +10,7 @@ public class ReviewRatingDTO {
     @Min(1) @Max(5)
     private Integer value;
 
-    // getters/setters
+
     public Long getUserId() { return userId; }
     public void setUserId(Long u) { this.userId = u; }
     public Integer getValue() { return value; }

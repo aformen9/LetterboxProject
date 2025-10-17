@@ -12,7 +12,7 @@ public class User {
     private Long id;
 
     @Column(nullable=false, length=50)
-    private String username;          // único
+    private String username;
 
     @Column(length=100)
     private String displayName;
@@ -22,7 +22,7 @@ public class User {
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    // getters/setters
+
     public Long getId() { return id; }
     public String getUsername() { return username; }
     public void setUsername(String u) { this.username = u; }

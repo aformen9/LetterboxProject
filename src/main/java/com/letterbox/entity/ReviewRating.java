@@ -25,7 +25,7 @@ public class ReviewRating {
     @Column(name="user_id", nullable=false)
     private Long userId;
 
-    // ⚠️ No usar "value" porque H2 lo trata como palabra reservada
+
     @Min(1) @Max(5)
     @Column(name="score", nullable=false)
     private Integer score;
@@ -39,7 +39,7 @@ public class ReviewRating {
     @PreUpdate
     public void touch() { this.updatedAt = LocalDateTime.now(); }
 
-    // getters/setters
+
     public Long getId() { return id; }
 
     public Long getReviewId() { return reviewId; }

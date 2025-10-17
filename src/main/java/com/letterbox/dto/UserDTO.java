@@ -10,7 +10,7 @@ public class UserDTO {
     private String displayName;
     private String email;
 
-    // getters/setters
+
     public Long getId() { return id; }
     public void setId(Long i) { this.id = i; }
     public String getUsername() { return username; }
