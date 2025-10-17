@@ -1,33 +1,29 @@
 package com.letterbox.controller;
 
-import com.letterbox.dto.UserDTO;
 import com.letterbox.entity.User;
+import com.letterbox.dto.UserDTO;
 import com.letterbox.service.UserService;
-import org.springframework.stereotype.Controller;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
+
+@RestController
+@RequestMapping({"/api/users","/users"})
 public class UserController {
 
-    private final UserService userService;
+    private final UserService users;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserService users) { this.users = users; }
+
+    @PostMapping
+    public User register(@Valid @RequestBody UserDTO dto) {
+        return users.register(dto);
     }
 
-    @PostMapping("/register")
-    @ResponseBody
-    public String registerUser(
-            @RequestParam String username,
-            @RequestParam String password
-    ) {
-        UserDTO dto = new UserDTO();
-        dto.setUsername(username);
-        dto.setPassword(password);
-        dto.setDisplayName(username);
-        dto.setEmail(username + "@example.com"); // o lo que uses
+    @GetMapping
+    public List<User> list() { return users.list(); }
 
-        userService.register(dto);
-        return "Usuario registrado correctamente";
-    }
+    @GetMapping("/{id}")
+    public User get(@PathVariable Long id) { return users.get(id); }
 }

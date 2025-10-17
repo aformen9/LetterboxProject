@@ -8,6 +8,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "redirect:/index.html"; // 🔹 envía directamente al LetterBox
+        return "forward:/index.html"; // [cite: 725]
     }
 }

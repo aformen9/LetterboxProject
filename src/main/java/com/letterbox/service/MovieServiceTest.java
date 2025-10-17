@@ -1,10 +1,9 @@
-package com.letterbox.letterboxunified;
+package com.letterbox.service;
 
 import com.letterbox.dto.MovieDTO;
 // usa el paquete real de tus entidades:
 import com.letterbox.entity.Movie;      // <-- o com.letterbox.Entity.Movie
 
-import com.letterbox.service.MovieService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
