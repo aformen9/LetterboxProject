@@ -1,4 +1,4 @@
-package com.letterbox.service;
+package com.letterbox.letterboxunified;
 
 import com.letterbox.dto.ReviewDTO;
 // usa el paquete real de tus entidades:
@@ -6,6 +6,7 @@ import com.letterbox.entity.Review;     // <-- o com.letterbox.Entity.Review
 import com.letterbox.entity.Movie;      // <-- o com.letterbox.Entity.Movie
 
 import com.letterbox.repository.MovieRepository;
+import com.letterbox.service.ReviewService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
