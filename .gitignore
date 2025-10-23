@@ -43,3 +43,4 @@ data/
 *.mv.db
 *.trace.db
 *.db
+.DS_Store
