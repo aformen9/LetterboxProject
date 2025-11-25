@@ -1,13 +1,15 @@
 package com.letterbox.service;
 
 import com.letterbox.dto.ReviewDTO;
-import com.letterbox.entity.Review;               // 👈 OJO: Entity con E mayúscula (como en tu proyecto)
+import com.letterbox.entity.Review;
 import com.letterbox.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -47,5 +49,45 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public List<Review> getFavoriteReviews() {
         return reviewRepository.findByIsFavoriteTrueOrderByReviewDateDesc();
+
     }
+
+    // ==================== MÉTODOS CON JAVA STREAMS ====================
+
+    /**
+     * Calcula el promedio de ratings para una película específica
+     * Demuestra: mapToDouble(), average(), orElse()
+     */
+    @Transactional(readOnly = true)
+    public Double getAverageRatingForMovie(Long movieId) {
+        List<Review> reviews = reviewRepository.findByMovieIdOrderByReviewDateDesc(movieId);
+        return reviews.stream()
+                .mapToDouble(Review::getRating)
+                .average()
+                .orElse(0.0);
+    }
+
+    /**
+     * Obtiene las N reviews con mejor rating (mayor a menor)
+     * Demuestra: sorted() con reversed(), limit()
+     */
+    @Transactional(readOnly = true)
+    public List<Review> getTopRatedReviews(int limit) {
+        return reviewRepository.findAll().stream()
+                .sorted(Comparator.comparing(Review::getRating).reversed())
+                .limit(limit)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Filtra reviews por rating mínimo
+     * Demuestra: filter() con condición numérica
+     */
+    @Transactional(readOnly = true)
+    public List<Review> getReviewsByMinRating(Double minRating) {
+        return reviewRepository.findAllByOrderByReviewDateDesc().stream()
+                .filter(review -> review.getRating() >= minRating)
+                .collect(Collectors.toList());
+    }
+
 }

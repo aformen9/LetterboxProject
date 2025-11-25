@@ -6,8 +6,11 @@ import com.letterbox.repository.MovieRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 
 @Service
 @Transactional
@@ -44,6 +47,37 @@ public class MovieService {
     public List<Movie> searchMovies(String query) {
         return movieRepository.searchMovies(query == null ? "" : query.toLowerCase());
     }
+
+    // ==================== MÉTODOS CON JAVA STREAMS ====================
+
+    /**
+     * Filtra películas por género Y año mínimo, ordenadas alfabéticamente
+     * Demuestra: filter() con múltiples condiciones, sorted(), collect()
+     */
+    @Transactional(readOnly = true)
+    public List<Movie> findByGenreAndYearSorted(String genre, Integer minYear) {
+        return movieRepository.findAll().stream()
+                .filter(movie -> genre == null || movie.getGenre().equalsIgnoreCase(genre))
+                .filter(movie -> minYear == null || movie.getReleaseYear() >= minYear)
+                .sorted(Comparator.comparing(Movie::getTitle))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Obtiene las N películas más recientes (mayor año de lanzamiento)
+     * Demuestra: sorted() con reversed(), limit()
+     */
+    @Transactional(readOnly = true)
+    public List<Movie> getMostRecentMovies(int limit) {
+        return movieRepository.findAll().stream()
+                .sorted(Comparator.comparing(Movie::getReleaseYear).reversed())
+                .limit(limit)
+                .collect(Collectors.toList());
+    }
+
 }
+
+
+
 
 
