@@ -6,8 +6,10 @@ import com.letterbox.repository.MovieRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -43,6 +45,21 @@ public class MovieService {
     @Transactional(readOnly = true)
     public List<Movie> searchMovies(String query) {
         return movieRepository.searchMovies(query == null ? "" : query.toLowerCase());
+    }
+
+    // ==================== JAVA STREAMS ====================
+
+    /**
+     * Filtra películas por género y año mínimo, ordenadas alfabéticamente
+     * Demuestra: stream(), filter(), sorted(), collect()
+     */
+    @Transactional(readOnly = true)
+    public List<Movie> findByGenreAndYearSorted(String genre, Integer minYear) {
+        return movieRepository.findAll().stream()
+                .filter(movie -> genre == null || movie.getGenre().equalsIgnoreCase(genre))
+                .filter(movie -> minYear == null || movie.getReleaseYear() >= minYear)
+                .sorted(Comparator.comparing(Movie::getTitle))
+                .collect(Collectors.toList());
     }
 }
 
