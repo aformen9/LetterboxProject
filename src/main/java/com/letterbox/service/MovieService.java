@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
@@ -33,6 +35,13 @@ public class MovieService {
     }
 
     public Movie saveMovie(MovieDTO dto) {
+        // NUEVO: Validar formato de posterUrl con regex
+        if (dto.getPosterUrl() != null && !dto.getPosterUrl().trim().isEmpty()) {
+            if (!isValidImageUrl(dto.getPosterUrl())) {
+                throw new IllegalArgumentException("URL de poster inválida. Debe ser http/https y terminar en jpg, jpeg, png, gif o webp");
+            }
+        }
+
         Movie movie = new Movie();
         movie.setTitle(dto.getTitle());
         movie.setDirector(dto.getDirector());
@@ -73,6 +82,25 @@ public class MovieService {
                 .sorted(Comparator.comparing(Movie::getReleaseYear).reversed())
                 .limit(limit)
                 .collect(Collectors.toList());
+    }
+
+    // ==================== VALIDACIÓN CON PATTERN/MATCHER ====================
+
+    /**
+     * Valida que la URL del poster sea una URL válida de imagen
+     * Acepta: http/https + extensiones: jpg, jpeg, png, gif, webp
+     */
+    private boolean isValidImageUrl(String url) {
+        if (url == null || url.trim().isEmpty()) {
+            return false;
+        }
+
+        // Patrón regex para URL de imagen
+        String urlRegex = "^https?://.*\\.(jpg|jpeg|png|gif|webp)$";
+        Pattern pattern = Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(url);
+
+        return matcher.matches();
     }
 
 }
