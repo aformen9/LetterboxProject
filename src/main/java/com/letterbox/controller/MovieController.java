@@ -4,6 +4,8 @@ import com.letterbox.entity.Movie;
 import com.letterbox.dto.MovieDTO;
 import com.letterbox.repository.MovieRepository;
 import com.letterbox.service.MovieService;
+import com.letterbox.service.CsvExportService;
+import com.letterbox.service.CsvImportService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,25 +13,29 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-
 @RequestMapping({"/api/movies", "/movies"})
 public class MovieController {
 
     private final MovieService movieService;
     private final MovieRepository movieRepository;
+    private final CsvExportService csvExportService;
+    private final CsvImportService csvImportService;
 
+    // ⚠️ UN SOLO CONSTRUCTOR (este)
     public MovieController(MovieService movieService,
-                           MovieRepository movieRepository) {
+                           MovieRepository movieRepository,
+                           CsvExportService csvExportService,
+                           CsvImportService csvImportService) {
         this.movieService = movieService;
         this.movieRepository = movieRepository;
+        this.csvExportService = csvExportService;
+        this.csvImportService = csvImportService;
     }
-
 
     @GetMapping
     public List<Movie> getAllMovies() {
         return movieService.getAllMovies();
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<Movie> getMovieById(@PathVariable Long id) {
@@ -37,18 +43,15 @@ public class MovieController {
         return m.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
     @GetMapping("/search")
     public List<Movie> search(@RequestParam String query) {
         return movieService.searchMovies(query);
     }
 
-
     @PostMapping
     public Movie create(@RequestBody MovieDTO dto) {
-        return movieService.saveMovie(dto); // dto.year -> entity.releaseYear
+        return movieService.saveMovie(dto);
     }
-
 
     @GetMapping("/genre/{genre}")
     public List<Movie> getMoviesByGenre(@PathVariable String genre) {
@@ -58,5 +61,24 @@ public class MovieController {
     @GetMapping("/year/{year}")
     public List<Movie> getMoviesByYear(@PathVariable Integer year) {
         return movieRepository.findByReleaseYear(year);
+    }
+
+    // ==================== ENDPOINTS CSV ====================
+
+    @GetMapping("/export/csv")
+    public ResponseEntity<String> exportCsv() {
+        List<Movie> movies = movieService.getAllMovies();
+        String csv = csvExportService.exportMoviesToCsv(movies);
+
+        return ResponseEntity.ok()
+                .header("Content-Type", "text/csv")
+                .header("Content-Disposition", "attachment; filename=movies.csv")
+                .body(csv);
+    }
+
+    @PostMapping("/import/csv")
+    public ResponseEntity<List<Movie>> importCsv(@RequestBody String csvContent) {
+        List<Movie> imported = csvImportService.importMoviesFromCsv(csvContent);
+        return ResponseEntity.ok(imported);
     }
 }
