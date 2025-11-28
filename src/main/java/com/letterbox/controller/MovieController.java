@@ -4,8 +4,7 @@ import com.letterbox.entity.Movie;
 import com.letterbox.dto.MovieDTO;
 import com.letterbox.repository.MovieRepository;
 import com.letterbox.service.MovieService;
-import com.letterbox.service.CsvExportService;
-import com.letterbox.service.CsvImportService;
+import com.letterbox.service.CsvService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,19 +17,17 @@ public class MovieController {
 
     private final MovieService movieService;
     private final MovieRepository movieRepository;
-    private final CsvExportService csvExportService;
-    private final CsvImportService csvImportService;
+    private final CsvService csvService;
 
-    // ⚠️ UN SOLO CONSTRUCTOR (este)
     public MovieController(MovieService movieService,
                            MovieRepository movieRepository,
-                           CsvExportService csvExportService,
-                           CsvImportService csvImportService) {
+                           CsvService csvService) {
         this.movieService = movieService;
         this.movieRepository = movieRepository;
-        this.csvExportService = csvExportService;
-        this.csvImportService = csvImportService;
+        this.csvService = csvService;
     }
+
+    // ENDPOINTS
 
     @GetMapping
     public List<Movie> getAllMovies() {
@@ -63,12 +60,13 @@ public class MovieController {
         return movieRepository.findByReleaseYear(year);
     }
 
-    // ==================== ENDPOINTS CSV ====================
+    // ENDPOINTS CSV
 
     @GetMapping("/export/csv")
     public ResponseEntity<String> exportCsv() {
         List<Movie> movies = movieService.getAllMovies();
-        String csv = csvExportService.exportMoviesToCsv(movies);
+
+        String csv = csvService.exportMoviesToCsv(movies);
 
         return ResponseEntity.ok()
                 .header("Content-Type", "text/csv")
@@ -77,8 +75,13 @@ public class MovieController {
     }
 
     @PostMapping("/import/csv")
-    public ResponseEntity<List<Movie>> importCsv(@RequestBody String csvContent) {
-        List<Movie> imported = csvImportService.importMoviesFromCsv(csvContent);
-        return ResponseEntity.ok(imported);
+    public ResponseEntity<?> importCsv(@RequestBody String csvContent) {
+        try {
+            List<Movie> imported = csvService.importMoviesFromCsv(csvContent);
+            return ResponseEntity.ok(imported);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al importar CSV: " + e.getMessage());
+        }
     }
 }
