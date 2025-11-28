@@ -52,12 +52,8 @@ public class ReviewService {
 
     }
 
-    // ==================== MÉTODOS CON JAVA STREAMS ====================
+    // JAVA STREAMS
 
-    /**
-     * Calcula el promedio de ratings para una película específica
-     * Demuestra: mapToDouble(), average(), orElse()
-     */
     @Transactional(readOnly = true)
     public Double getAverageRatingForMovie(Long movieId) {
         List<Review> reviews = reviewRepository.findByMovieIdOrderByReviewDateDesc(movieId);
@@ -67,10 +63,6 @@ public class ReviewService {
                 .orElse(0.0);
     }
 
-    /**
-     * Obtiene las N reviews con mejor rating (mayor a menor)
-     * Demuestra: sorted() con reversed(), limit()
-     */
     @Transactional(readOnly = true)
     public List<Review> getTopRatedReviews(int limit) {
         return reviewRepository.findAll().stream()
@@ -79,10 +71,6 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Filtra reviews por rating mínimo
-     * Demuestra: filter() con condición numérica
-     */
     @Transactional(readOnly = true)
     public List<Review> getReviewsByMinRating(Double minRating) {
         return reviewRepository.findAllByOrderByReviewDateDesc().stream()

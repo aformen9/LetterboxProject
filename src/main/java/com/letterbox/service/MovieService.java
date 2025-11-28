@@ -35,12 +35,6 @@ public class MovieService {
     }
 
     public Movie saveMovie(MovieDTO dto) {
-        // NUEVO: Validar formato de posterUrl con regex
-        if (dto.getPosterUrl() != null && !dto.getPosterUrl().trim().isEmpty()) {
-            if (!isValidImageUrl(dto.getPosterUrl())) {
-                throw new IllegalArgumentException("URL de poster inválida. Debe ser http/https y terminar en jpg, jpeg, png, gif o webp");
-            }
-        }
 
         Movie movie = new Movie();
         movie.setTitle(dto.getTitle());
@@ -57,12 +51,8 @@ public class MovieService {
         return movieRepository.searchMovies(query == null ? "" : query.toLowerCase());
     }
 
-    // ==================== MÉTODOS CON JAVA STREAMS ====================
+    // JAVA STREAMS
 
-    /**
-     * Filtra películas por género Y año mínimo, ordenadas alfabéticamente
-     * Demuestra: filter() con múltiples condiciones, sorted(), collect()
-     */
     @Transactional(readOnly = true)
     public List<Movie> findByGenreAndYearSorted(String genre, Integer minYear) {
         return movieRepository.findAll().stream()
@@ -72,10 +62,6 @@ public class MovieService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Obtiene las N películas más recientes (mayor año de lanzamiento)
-     * Demuestra: sorted() con reversed(), limit()
-     */
     @Transactional(readOnly = true)
     public List<Movie> getMostRecentMovies(int limit) {
         return movieRepository.findAll().stream()
@@ -84,24 +70,6 @@ public class MovieService {
                 .collect(Collectors.toList());
     }
 
-    // ==================== VALIDACIÓN CON PATTERN/MATCHER ====================
-
-    /**
-     * Valida que la URL del poster sea una URL válida de imagen
-     * Acepta: http/https + extensiones: jpg, jpeg, png, gif, webp
-     */
-    private boolean isValidImageUrl(String url) {
-        if (url == null || url.trim().isEmpty()) {
-            return false;
-        }
-
-        // Patrón regex para URL de imagen
-        String urlRegex = "^https?://.*\\.(jpg|jpeg|png|gif|webp)$";
-        Pattern pattern = Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(url);
-
-        return matcher.matches();
-    }
 
 }
 

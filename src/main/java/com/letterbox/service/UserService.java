@@ -15,18 +15,13 @@ public class UserService {
 
     public UserService(UserRepository users) { this.users = users; }
 
-    // ==================== VALIDACIÓN CON PATTERN/MATCHER ====================
+    // PATTERN/MATCHER
 
-    /**
-     * Valida formato de email usando expresiones regulares
-     * Patrón: usuario@dominio.extension
-     */
     private boolean isValidEmail(String email) {
         if (email == null || email.trim().isEmpty()) {
             return false;
         }
 
-        // Patrón regex para email
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
         Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);
@@ -35,7 +30,6 @@ public class UserService {
     }
 
     public User register(UserDTO dto) {
-        // Validar username duplicado
         users.findByUsernameIgnoreCase(dto.getUsername()).ifPresent(u -> {
             throw new IllegalArgumentException("username ya existe");
         });
