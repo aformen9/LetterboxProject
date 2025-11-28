@@ -52,7 +52,8 @@ public class ReviewService {
 
     }
 
-    // JAVA STREAMS
+
+    
 
     @Transactional(readOnly = true)
     public Double getAverageRatingForMovie(Long movieId) {

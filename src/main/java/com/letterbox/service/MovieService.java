@@ -51,7 +51,8 @@ public class MovieService {
         return movieRepository.searchMovies(query == null ? "" : query.toLowerCase());
     }
 
-    // JAVA STREAMS
+
+
 
     @Transactional(readOnly = true)
     public List<Movie> findByGenreAndYearSorted(String genre, Integer minYear) {

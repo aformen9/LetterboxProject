@@ -15,7 +15,8 @@ public class UserService {
 
     public UserService(UserRepository users) { this.users = users; }
 
-    // PATTERN/MATCHER
+
+
 
     private boolean isValidEmail(String email) {
         if (email == null || email.trim().isEmpty()) {
@@ -34,7 +35,7 @@ public class UserService {
             throw new IllegalArgumentException("username ya existe");
         });
 
-        // NUEVO: Validar formato de email con regex
+
         if (dto.getEmail() != null && !dto.getEmail().trim().isEmpty()) {
             if (!isValidEmail(dto.getEmail())) {
                 throw new IllegalArgumentException("formato de email inválido");
